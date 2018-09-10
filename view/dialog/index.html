@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>弹窗UI测试</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no"/>
+    <link rel="stylesheet" href="<?= __PUBLIC__.'css/'?>global.css">
+    <link rel="stylesheet" href="<?= __PUBLIC__.'css/'?>animate.css">
+    <link rel="stylesheet" href="<?= __PUBLIC__.'css/'?>dialog.css">
+</head>
+
+<style>
+    body,html{
+        /*display: flex;
+        justify-content: center;
+        align-items: center;*/
+    }
+
+    .div-testDialog{
+        width: 500px;
+        height: auto;
+        margin: 50px auto;
+    }
+
+    .div-testDialog button{
+        margin:  10px;
+    }
+    @media screen and ( max-width: 460px){
+        .div-testDialog{
+            width: 90%;
+        }
+    }
+</style>
+
+<body>
+<div class="div-testDialog">
+
+    <button class="dw-btn btn-success has-hover" onclick="javascript:$('body').dialog({type:'success',showBoxShadow:true,duration:0,buttons:[{name: '确定',className: 'false'}],discription:'这个是针对如果有第三个选项的按钮   把取消效果放在右上方!',buttonsSameWidth:true,discriptionFontSize:'14px',showCloseIcon:true})">多一个关闭按钮</button>
+
+</div>
+</body>
+<script src="<?= __PUBLIC__.'js/'?>jquery.js"></script>
+<script src="<?= __PUBLIC__.'js/'?>dialog.js"></script>
+</html>

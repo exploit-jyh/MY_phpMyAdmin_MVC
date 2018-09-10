@@ -1,0 +1,43 @@
+
+<div class="list_container" style="">
+    <ul>
+        <li class="new_table italics">
+            <div class="block"><i></i><span class="hide pos2_name">tables</span><span class="hide pos2_value">0</span>
+            </div>
+            <div class="block "><a
+                    href="#"><img
+                    src="<?= __PUBLIC__.'php_admin/'?>dot.gif" title="新建" alt="新建" class="icon ic_b_table_add"></a></div>
+            <a class="hover_show_full"
+               href="#" title="" type="create">新建</a>
+            <div class="clearfloat"></div>
+        </li>
+
+<?php foreach($res as $k=>$v):?>
+
+<li class="table">
+    <div class="block">
+        <i></i>
+        <b></b>
+        <a class="expander" href="#">
+            <span class="hide aPath">cm9vdA==.MTcxMmE=.dGFibGVz.c2hvcA==</span>
+            <span class="hide vPath">cm9vdA==.MTcxMmE=.6KGo.c2hvcA==</span>
+            <span class="hide pos">0</span>
+            <span class="hide pos2_name">tables</span>
+            <span class="hide pos2_value">0</span>
+            <img src="<?= __PUBLIC__.'php_admin/'?>dot.gif" title="扩展/收起" alt="扩展/收起" class="icon ic_b_plus" type="table" value="<?= $v['Tables_in_name']?>" database="<?= $database?>">
+    </a>
+    </div>
+    <div class="block "><a
+            href="tbl_structure.php?server=1&amp;db=1712a&amp;table=shop&amp;token=190783e78d2e3e59ae39aec28904c75a"><img
+            src="<?= __PUBLIC__.'php_admin/'?>dot.gif" title="结构" alt="结构" class="icon ic_b_props"></a></div>
+    <a class="hover_show_full"
+       href="sql.php?server=1&amp;db=1712a&amp;table=shop&amp;pos=0&amp;token=190783e78d2e3e59ae39aec28904c75a"
+       title="浏览"><?= $v['Tables_in_name']?></a>
+    <div class="clearfloat"></div>
+</li>
+
+        <?php endforeach;?>
+    </ul>
+</div>
+
+

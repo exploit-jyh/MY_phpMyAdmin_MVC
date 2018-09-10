@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<!-- saved from url=(0076)http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10 -->
+<html lang="zh_CN" dir="ltr" class="chrome chrome68">
+<script src="<?=__PUBLIC__.'php_admin/'?>jquery-1.7.2.js" type="text/javascript">
+</script>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="referrer" content="no-referrer">
+    <meta name="robots" content="noindex,nofollow">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <link rel="icon" href="http://localhost/phpmyadmin/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="http://localhost/phpmyadmin/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css"
+          href="<?= __PUBLIC__.'php_admin/'?>jquery-ui-1.11.4.css">
+    <link rel="stylesheet" type="text/css" href="<?= __PUBLIC__.'php_admin/'?>codemirror.css">
+    <link rel="stylesheet" type="text/css" href="<?= __PUBLIC__.'php_admin/'?>show-hint.css">
+    <link rel="stylesheet" type="text/css" href="<?= __PUBLIC__.'php_admin/'?>xuanran.css">
+    <link rel="stylesheet" type="text/css"
+          href="<?= __PUBLIC__.'php_admin/'?>lint.css">
+    <link rel="stylesheet" type="text/css" href="<?= __PUBLIC__.'php_admin/'?>printview.css"
+          media="print" id="printcss">
+    <title>localhost / Local Databases | phpMyAdmin 4.6.4</title>
+
+</head>
+
+<script>
+
+    $(function(){
+
+        $('.ic_b_plus').live('click',function(){
+            var imgDome = $(this);
+            var liDome= $(this).closest('li');
+            //var databaseName = $('.hover_show_full',liDome).html();
+            var type = $(this).attr('type');
+            var value = $(this).attr('value');
+            $(this).attr('class','icon ic_b_minus');
+
+            if(type =='database'){
+                var url = 'getTable';  //获取表
+                var data = 'database='+value;
+            }
+
+            if(type =='table'){
+                var database = $(this).attr('database');
+                var url = 'getFieldIndex';  //获取表字段和索引
+                var data = 'table='+value+'&database='+database;
+            }
+
+            if(type =='field'){
+                var database = $(this).attr('database');
+                var url = 'getFieldIndexList';  //获取表字段
+                var table = $(this).attr('table');
+                var data = 'table='+value+'&database='+database+'&table='+table;
+            }
+            if(type =='Index'){
+                var database = $(this).attr('database');
+                var url = 'getIndexList';  //获取表字段的索引
+                var table = $(this).attr('table');
+                var data = 'table='+value+'&database='+database+'&table='+table;
+            }
+
+            if(type =='fieldIndex'){
+                var database = $(this).attr('database');
+                var url = 'getFieldIndexList';  //获取表字段和索引
+                var table = $(this).attr('table');
+                var data = 'table='+value+'&database='+database+'&table='+table;
+            }
+
+
+            $.ajax({
+                url:url,
+                type:'get',
+                data:data,
+                //dataType:'json',
+
+                beforeSend:function(){
+                    imgDome.attr('src',"<?= __PUBLIC__.'php_admin/'?>ajax_clock_small.gif");
+                    imgDome.attr('class','icon');
+                },
+
+                /*complete:function(){
+                 imgDome.attr('src',"<?= __PUBLIC__.'php_admin/'?>dot.gif");
+                 imgDome.attr('class','icon ic_b_minus');
+                 },*/
+
+                success:function(e){
+                    imgDome.attr('src',"<?= __PUBLIC__.'php_admin/'?>dot.gif");
+                    imgDome.attr('class','icon ic_b_minus');
+
+                    liDome.append(e);
+
+                }
+            })
+        })
+
+        $('.ic_b_minus').live('click',function () {
+            $(this).attr('class','icon ic_b_plus');
+            var liDome=$(this).closest('li');
+            $('.list_container',liDome).remove();
+
+        })
+    })
+
+</script>
+
+<body style="margin-left: 315px; margin-bottom: 20px; padding-top: 61px;">
+<div id="pma_navigation" style="width: 315px;">
+    <div id="pma_navigation_resizer" style="left: 315px;"></div>
+    <div id="pma_navigation_collapser" title="隐藏导航面板" style="left: 315px;">←</div>
+    <div id="pma_navigation_content">
+        <div id="pma_navigation_header"><a class="hide navigation_url"
+                                           href="http://localhost/phpmyadmin/navigation.php?ajax_request=1&amp;token=4f13a4aaf28b1c96d0b2a044e1f05c10"></a>
+            <!-- LOGO START -->
+            <div id="pmalogo">
+                <a href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10">
+                    <img src="<?= __PUBLIC__.'php_admin/'?>logo_left.png" alt="phpMyAdmin"
+                         id="imgpmalogo"> </a>
+            </div>
+            <!-- LOGO END --><!-- LINKS START -->
+            <div id="navipanellinks"><a
+                    href="http://www.arithmetic.com/index.php/home/index" title="主页"><img
+                    src="<?= __PUBLIC__.'php_admin/'?>dot.gif" title="主页" alt="主页"
+                    class="icon ic_b_home"></a><a
+                    href="http://www.shi.com/index.php/home/del"
+                    class="disableAjax" title="退出">
+                <img src="<?= __PUBLIC__.'php_admin/'?>dot.gif" title="退出" alt="退出"
+                     class="icon ic_s_loggoff"></a><a href="http://localhost/phpmyadmin/doc/html/index.html"
+                                                      target="documentation" title="phpMyAdmin 文档"><img
+                    src="<?= __PUBLIC__.'php_admin/'?>dot.gif" title="phpMyAdmin 文档"
+                    alt="phpMyAdmin 文档" class="icon ic_b_docs"></a><a
+                    href="http://localhost/phpmyadmin/url.php?url=https%3A%2F%2Fdev.mysql.com%2Fdoc%2Frefman%2F5.7%2Fen%2Findex.html"
+                    target="mysql_doc" title="文档"><img
+                    src="<?= __PUBLIC__.'php_admin/'?>dot.gif" title="文档" alt="文档"
+                    class="icon ic_b_sqlhelp"></a><a
+                    href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10#"
+                    id="pma_navigation_settings_icon" title="导航面板设定"><img
+                    src="<?= __PUBLIC__.'php_admin/'?>dot.gif" title="导航面板设定" alt="导航面板设定"
+                    class="icon ic_s_cog"></a><a
+                    href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10#"
+                    id="pma_navigation_reload" title="重新载入导航面板"><img
+                    src="<?= __PUBLIC__.'php_admin/'?>dot.gif" title="重新载入导航面板" alt="重新载入导航面板"
+                    class="icon ic_s_reload"></a></div><!-- LINKS ENDS --><img
+                    src="<?= __PUBLIC__.'php_admin/'?>ajax_clock_small.gif" title="正在加载…"
+                    alt="正在加载…" style="visibility: hidden; display:none" class="throbber"></div>
+        <div id="pma_navigation_tree" class="list_container synced highlight" style="height: 557px;">
+            <div class="pma_quick_warp">
+                <div class="drop_list"><span title="最近使用的表" class="drop_button">近期访问</span>
+                    <ul id="pma_recent_list">
+                        <li class="warp_link">没有最近使用的表。</li>
+                    </ul>
+                </div>
+                <div class="drop_list"><span title="表收藏夹" class="drop_button">表收藏夹</span>
+                    <ul id="pma_favorite_list">
+                        <li class="warp_link">表收藏夹为空。</li>
+                    </ul>
+                </div>
+                <div class="clearfloat"></div>
+            </div>
+            <div class="clearfloat"></div>
+            <ul><!-- CONTROLS START -->
+                <li id="navigation_controls_outer">
+                    <div id="navigation_controls"><a
+                            href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10#"
+                            id="pma_navigation_collapse" title="全部折叠"><img
+                            src="<?= __PUBLIC__.'php_admin/'?>s_collapseall.png" title="全部折叠"
+                            alt="全部折叠"></a><a
+                            href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10#"
+                            id="pma_navigation_sync" title="从主面板取消链接"><img
+                            src="<?= __PUBLIC__.'php_admin/'?>dot.gif" title="从主面板取消链接"
+                            alt="从主面板取消链接" class="icon ic_s_link"></a></div>
+                </li><!-- CONTROLS ENDS --></ul>
+            <div id="pma_navigation_tree_content" style="height: 506px;">
+                <ul>
+                    <li class="first new_database italics">
+                        <div class="block"><i class="first"></i></div>
+                        <div class="block "><a
+                                href="http://localhost/phpmyadmin/server_databases.php?server=1&amp;token=4f13a4aaf28b1c96d0b2a044e1f05c10"><img
+                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif" title="" alt=""
+                                class="icon ic_b_newdb"></a></div>
+                        <a class="hover_show_full"
+                           href="http://localhost/phpmyadmin/server_databases.php?server=1&amp;token=4f13a4aaf28b1c96d0b2a044e1f05c10"
+                           title="">新建</a>
+                        <div class="clearfloat"></div>
+                    </li>
+                    <?php foreach($show_database as $k=>$v):?>
+                    <li class="database">
+                        <div class="block"><i></i><b></b><a class="expander"
+                                                            href="#"><span
+                                class="hide aPath">cm9vdA==.aW5mb3JtYXRpb25fc2NoZW1h</span><span class="hide vPath">cm9vdA==.aW5mb3JtYXRpb25fc2NoZW1h</span><span
+                                class="hide pos">0</span><img
+                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif" title="扩展/收起"
+                                alt="扩展/收起" class="icon ic_b_plus" type="database" value="<?= $v['Database'] ; ?>"></a></div>
+                        <div class="block "><a
+                                href="http://localhost/phpmyadmin/db_operations.php?server=1&amp;db=information_schema&amp;token=4f13a4aaf28b1c96d0b2a044e1f05c10"><img
+                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif" title="数据库操作"
+                                alt="数据库操作" class="icon ic_s_db"></a></div>
+                        <a class="hover_show_full"
+                           href=""
+                           title="结构"><?=$v['Database']?></a>
+                        <div class="clearfloat"></div>
+                    </li>
+
+                    <?php endforeach;?>
+                </ul>
+            </div>
+        </div>
+        <div id="pma_navi_settings_container">
+            <div id="pma_navigation_settings">
+                <div class="page_settings">
+                    <form method="post"
+                          action="http://localhost/phpmyadmin/index.php?db=&amp;table=&amp;server=1&amp;target=&amp;token=4f13a4aaf28b1c96d0b2a044e1f05c10"
+                          class="config-form disableAjax"><input type="hidden" name="tab_hash" value=""><input
+                            type="hidden" name="check_page_refresh" id="check_page_refresh" value="1">
+                        <input type="hidden" name="token" value="4f13a4aaf28b1c96d0b2a044e1f05c10">
+                        <input type="hidden" name="submit_save" value="Navi_panel">
+                        <ul class="tabs">
+
+                            <li class="active">
+
+                                <a href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10#Navi_panel">
+                                    导航面板 </a>
+                            </li>
+                            <li>
+
+                                <a href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10#Navi_tree">
+                                    导航树 </a>
+                            </li>
+                            <li>
+
+                                <a href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10#Navi_databases">
+                                    数据库 </a>
+                            </li>
+                            <li>
+
+                                <a href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10#Navi_tables">
+                                    表 </a>
+                            </li>
+                        </ul>
+                        <br clear="right">
+                        <div class="tabs_contents">
+                            <fieldset class="optbox" id="Navi_panel" style="display: block;">
+                                <legend>导航面板</legend>
+                                <p>自定义导航面板。</p>
+                                <table width="100%" cellspacing="0">
+                                    <tbody>
+                                    <tr>
+                                        <th><label for="ShowDatabasesNavigationAsTree">以树状显示数据库导航面板</label><span
+                                                class="doc"><a
+                                                href="http://localhost/phpmyadmin/doc/html/config.html#cfg_ShowDatabasesNavigationAsTree"
+                                                target="documentation"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="文档" alt="文档" class="icon ic_b_help"></a>
+</span>
+                                            <small>导航栏使用数据库选择器替代树形列表</small>
+                                        </th>
+                                        <td><span class="checkbox"><input type="checkbox"
+                                                                          name="ShowDatabasesNavigationAsTree"
+                                                                          id="ShowDatabasesNavigationAsTree"
+                                                                          checked="checked"></span><a
+                                                class="restore-default"
+                                                href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10#ShowDatabasesNavigationAsTree"
+                                                title="还原为默认值" style="display: inline-block; opacity: 0.25;"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="" alt="" class="icon ic_s_reload" style="display: none;"></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th><label for="NavigationLinkWithMainPanel">与主面板链接</label><span class="doc"><a
+                                                href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationLinkWithMainPanel"
+                                                target="documentation"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="文档" alt="文档" class="icon ic_b_help"></a>
+</span>
+                                            <small>高亮当前数据库或表链接到主面板。</small>
+                                        </th>
+                                        <td><span class="checkbox"><input type="checkbox"
+                                                                          name="NavigationLinkWithMainPanel"
+                                                                          id="NavigationLinkWithMainPanel"
+                                                                          checked="checked"></span><a
+                                                class="restore-default"
+                                                href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10#NavigationLinkWithMainPanel"
+                                                title="还原为默认值" style="display: inline-block; opacity: 0.25;"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="" alt="" class="icon ic_s_reload" style="display: none;"></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th><label for="NavigationDisplayLogo">显示徽标</label><span class="doc"><a
+                                                href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationDisplayLogo"
+                                                target="documentation"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="文档" alt="文档" class="icon ic_b_help"></a>
+</span>
+                                            <small>在导航面板中显示图示。</small>
+                                        </th>
+                                        <td><span class="checkbox"><input type="checkbox" name="NavigationDisplayLogo"
+                                                                          id="NavigationDisplayLogo" checked="checked"></span><a
+                                                class="restore-default"
+                                                href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10#NavigationDisplayLogo"
+                                                title="还原为默认值" style="display: inline-block; opacity: 0.25;"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="" alt="" class="icon ic_s_reload" style="display: none;"></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th><label for="NavigationLogoLink">徽标链接地址</label><span class="doc"><a
+                                                href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationLogoLink"
+                                                target="documentation"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="文档" alt="文档" class="icon ic_b_help"></a>
+</span>
+                                            <small>导航面板中图示指向的链接地址。</small>
+                                        </th>
+                                        <td><input type="text" size="40" name="NavigationLogoLink"
+                                                   id="NavigationLogoLink" value="index.php"><a class="restore-default"
+                                                                                                href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10#NavigationLogoLink"
+                                                                                                title="还原为默认值"
+                                                                                                style="display: inline-block; opacity: 0.25;"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="" alt="" class="icon ic_s_reload" style="display: none;"></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th><label for="NavigationLogoLinkWindow">徽标链接目标</label><span class="doc"><a
+                                                href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationLogoLinkWindow"
+                                                target="documentation"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="文档" alt="文档" class="icon ic_b_help"></a>
+</span>
+                                            <small>在主窗口（<kbd>main</kbd>）或新窗口（<kbd>new</kbd>）打开目标页面。</small>
+                                        </th>
+                                        <td><select name="NavigationLogoLinkWindow" id="NavigationLogoLinkWindow">
+                                            <option value="main" selected="selected">main</option>
+                                            <option value="new">new</option>
+                                        </select><a class="restore-default"
+                                                    href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10#NavigationLogoLinkWindow"
+                                                    title="还原为默认值" style="display: inline-block; opacity: 0.25;"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="" alt="" class="icon ic_s_reload" style="display: none;"></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th><label for="NavigationTreePointerEnable">启用高亮</label><span class="doc"><a
+                                                href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationTreePointerEnable"
+                                                target="documentation"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="文档" alt="文档" class="icon ic_b_help"></a>
+</span>
+                                            <small>高亮鼠标指针所在位置的服务器。</small>
+                                        </th>
+                                        <td><span class="checkbox"><input type="checkbox"
+                                                                          name="NavigationTreePointerEnable"
+                                                                          id="NavigationTreePointerEnable"
+                                                                          checked="checked"></span><a
+                                                class="restore-default"
+                                                href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10#NavigationTreePointerEnable"
+                                                title="还原为默认值" style="display: inline-block; opacity: 0.25;"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="" alt="" class="icon ic_s_reload" style="display: none;"></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th><label for="FirstLevelNavigationItems">第一层节点的最大项数</label><span
+                                                class="doc"><a
+                                                href="http://localhost/phpmyadmin/doc/html/config.html#cfg_FirstLevelNavigationItems"
+                                                target="documentation"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="文档" alt="文档" class="icon ic_b_help"></a>
+</span>
+                                            <small>每页导航树所能显示的第一层的最大项数。</small>
+                                        </th>
+                                        <td><input type="number" name="FirstLevelNavigationItems"
+                                                   id="FirstLevelNavigationItems" value="100"><a class="restore-default"
+                                                                                                 href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10#FirstLevelNavigationItems"
+                                                                                                 title="还原为默认值"
+                                                                                                 style="display: inline-block; opacity: 0.25;"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="" alt="" class="icon ic_s_reload" style="display: none;"></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th><label for="NavigationTreeDisplayItemFilterMinimum">显示筛选框的最少项数</label><span
+                                                class="doc"><a
+                                                href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationTreeDisplayItemFilterMinimum"
+                                                target="documentation"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="文档" alt="文档" class="icon ic_b_help"></a>
+</span>
+                                            <small>设置达到多少个项（表、视图、程序和事件）时将显示筛选框。</small>
+                                        </th>
+                                        <td><input type="number" name="NavigationTreeDisplayItemFilterMinimum"
+                                                   id="NavigationTreeDisplayItemFilterMinimum" value="30"><a
+                                                class="restore-default"
+                                                href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10#NavigationTreeDisplayItemFilterMinimum"
+                                                title="还原为默认值" style="display: inline-block; opacity: 0.25;"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="" alt="" class="icon ic_s_reload" style="display: none;"></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th><label for="NumRecentTables">最近使用的表</label><span class="doc"><a
+                                                href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NumRecentTables"
+                                                target="documentation"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="文档" alt="文档" class="icon ic_b_help"></a>
+</span>
+                                            <small>最近使用的表的最大数量；设为 0 为禁用。</small>
+                                        </th>
+                                        <td><input type="number" name="NumRecentTables" id="NumRecentTables" value="10"><a
+                                                class="restore-default"
+                                                href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10#NumRecentTables"
+                                                title="还原为默认值" style="display: inline-block; opacity: 0.25;"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="" alt="" class="icon ic_s_reload" style="display: none;"></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th><label for="NumFavoriteTables">表收藏夹</label><span class="doc"><a
+                                                href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NumFavoriteTables"
+                                                target="documentation"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="文档" alt="文档" class="icon ic_b_help"></a>
+</span>
+                                            <small>收藏表的最大数量；设为 0 为禁用。</small>
+                                        </th>
+                                        <td><input type="number" name="NumFavoriteTables" id="NumFavoriteTables"
+                                                   value="10"><a class="restore-default"
+                                                                 href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10#NumFavoriteTables"
+                                                                 title="还原为默认值"
+                                                                 style="display: inline-block; opacity: 0.25;"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="" alt="" class="icon ic_s_reload" style="display: none;"></a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </fieldset>
+                            <fieldset class="optbox" id="Navi_tree" style="display: none;">
+                                <legend>导航树</legend>
+                                <p>自定义导航树。</p>
+                                <table width="100%" cellspacing="0">
+                                    <tbody>
+                                    <tr>
+                                        <th><label for="MaxNavigationItems">节点中最大项数</label><span class="doc"><a
+                                                href="http://localhost/phpmyadmin/doc/html/config.html#cfg_MaxNavigationItems"
+                                                target="documentation"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="文档" alt="文档" class="icon ic_b_help"></a>
+</span>
+                                            <small>每页导航树所能显示的最大项数。</small>
+                                        </th>
+                                        <td><input type="number" name="MaxNavigationItems" id="MaxNavigationItems"
+                                                   value="50"><a class="restore-default"
+                                                                 href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10#MaxNavigationItems"
+                                                                 title="还原为默认值"
+                                                                 style="display: inline-block; opacity: 0.25;"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="" alt="" class="icon ic_s_reload" style="display: none;"></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th><label for="NavigationTreeEnableGrouping">分组树中的项</label><span class="doc"><a
+                                                href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationTreeEnableGrouping"
+                                                target="documentation"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="文档" alt="文档" class="icon ic_b_help"></a>
+</span>
+                                            <small>将导航树中的项分组（根据上面 数据库与数据表 页面设置的分隔符分组）。</small>
+                                        </th>
+                                        <td><span class="checkbox"><input type="checkbox"
+                                                                          name="NavigationTreeEnableGrouping"
+                                                                          id="NavigationTreeEnableGrouping"
+                                                                          checked="checked"></span><a
+                                                class="restore-default"
+                                                href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10#NavigationTreeEnableGrouping"
+                                                title="还原为默认值" style="display: inline-block; opacity: 0.25;"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="" alt="" class="icon ic_s_reload" style="display: none;"></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th><label for="NavigationTreeEnableExpansion">启用表导航条展开功能</label><span
+                                                class="doc"><a
+                                                href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationTreeEnableExpansion"
+                                                target="documentation"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="文档" alt="文档" class="icon ic_b_help"></a>
+</span>
+                                            <small>是否允许在导航栏中展开导航树。</small>
+                                        </th>
+                                        <td><span class="checkbox"><input type="checkbox"
+                                                                          name="NavigationTreeEnableExpansion"
+                                                                          id="NavigationTreeEnableExpansion"
+                                                                          checked="checked"></span><a
+                                                class="restore-default"
+                                                href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10#NavigationTreeEnableExpansion"
+                                                title="还原为默认值" style="display: inline-block; opacity: 0.25;"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="" alt="" class="icon ic_s_reload" style="display: none;"></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th><label for="NavigationTreeShowTables">在导航树显示表</label><span class="doc"><a
+                                                href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationTreeShowTables"
+                                                target="documentation"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="文档" alt="文档" class="icon ic_b_help"></a>
+</span>
+                                            <small>在导航树是否在数据库下显示数据表节点</small>
+                                        </th>
+                                        <td><span class="checkbox"><input type="checkbox"
+                                                                          name="NavigationTreeShowTables"
+                                                                          id="NavigationTreeShowTables"
+                                                                          checked="checked"></span><a
+                                                class="restore-default"
+                                                href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10#NavigationTreeShowTables"
+                                                title="还原为默认值" style="display: inline-block; opacity: 0.25;"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="" alt="" class="icon ic_s_reload" style="display: none;"></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th><label for="NavigationTreeShowViews">在导航树显示视图</label><span class="doc"><a
+                                                href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationTreeShowViews"
+                                                target="documentation"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="文档" alt="文档" class="icon ic_b_help"></a>
+</span>
+                                            <small>在导航树中是否在数据库下显示视图节点</small>
+                                        </th>
+                                        <td><span class="checkbox"><input type="checkbox" name="NavigationTreeShowViews"
+                                                                          id="NavigationTreeShowViews"
+                                                                          checked="checked"></span><a
+                                                class="restore-default"
+                                                href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10#NavigationTreeShowViews"
+                                                title="还原为默认值" style="display: inline-block; opacity: 0.25;"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="" alt="" class="icon ic_s_reload" style="display: none;"></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th><label for="NavigationTreeShowFunctions">在导航树显示函数</label><span
+                                                class="doc"><a
+                                                href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationTreeShowFunctions"
+                                                target="documentation"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="文档" alt="文档" class="icon ic_b_help"></a>
+</span>
+                                            <small>是否显示导航树中数据库下级功能</small>
+                                        </th>
+                                        <td><span class="checkbox"><input type="checkbox"
+                                                                          name="NavigationTreeShowFunctions"
+                                                                          id="NavigationTreeShowFunctions"
+                                                                          checked="checked"></span><a
+                                                class="restore-default"
+                                                href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10#NavigationTreeShowFunctions"
+                                                title="还原为默认值" style="display: inline-block; opacity: 0.25;"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="" alt="" class="icon ic_s_reload" style="display: none;"></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th><label for="NavigationTreeShowProcedures">在导航树显示进程</label><span class="doc"><a
+                                                href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationTreeShowProcedures"
+                                                target="documentation"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="文档" alt="文档" class="icon ic_b_help"></a>
+</span>
+                                            <small>是否在导航树中显示数据库进程</small>
+                                        </th>
+                                        <td><span class="checkbox"><input type="checkbox"
+                                                                          name="NavigationTreeShowProcedures"
+                                                                          id="NavigationTreeShowProcedures"
+                                                                          checked="checked"></span><a
+                                                class="restore-default"
+                                                href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10#NavigationTreeShowProcedures"
+                                                title="还原为默认值" style="display: inline-block; opacity: 0.25;"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="" alt="" class="icon ic_s_reload" style="display: none;"></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th><label for="NavigationTreeShowEvents">在导航树显示事件</label><span class="doc"><a
+                                                href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationTreeShowEvents"
+                                                target="documentation"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="文档" alt="文档" class="icon ic_b_help"></a>
+</span>
+                                            <small>在导航树中数据库下是否显示事件节点</small>
+                                        </th>
+                                        <td><span class="checkbox"><input type="checkbox"
+                                                                          name="NavigationTreeShowEvents"
+                                                                          id="NavigationTreeShowEvents"
+                                                                          checked="checked"></span><a
+                                                class="restore-default"
+                                                href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10#NavigationTreeShowEvents"
+                                                title="还原为默认值" style="display: inline-block; opacity: 0.25;"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="" alt="" class="icon ic_s_reload" style="display: none;"></a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </fieldset>
+                            <fieldset class="optbox" id="Navi_databases" style="display: none;">
+                                <legend>数据库</legend>
+                                <p>数据库显示选项。</p>
+                                <table width="100%" cellspacing="0">
+                                    <tbody>
+                                    <tr>
+                                        <th><label
+                                                for="NavigationTreeDisplayDbFilterMinimum">设置达到多少个数据库时将显示数据库筛选框</label><span
+                                                class="doc"><a
+                                                href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationTreeDisplayDbFilterMinimum"
+                                                target="documentation"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="文档" alt="文档" class="icon ic_b_help"></a>
+</span></th>
+                                        <td><input type="number" name="NavigationTreeDisplayDbFilterMinimum"
+                                                   id="NavigationTreeDisplayDbFilterMinimum" value="30"><a
+                                                class="restore-default"
+                                                href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10#NavigationTreeDisplayDbFilterMinimum"
+                                                title="还原为默认值" style="display: inline-block; opacity: 0.25;"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="" alt="" class="icon ic_s_reload" style="display: none;"></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th><label for="NavigationTreeDbSeparator">数据库树分隔符</label><span class="doc"><a
+                                                href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationTreeDbSeparator"
+                                                target="documentation"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="文档" alt="文档" class="icon ic_b_help"></a>
+</span>
+                                            <small>将数据库分为不同层级的字符串。</small>
+                                        </th>
+                                        <td><input type="text" size="25" name="NavigationTreeDbSeparator"
+                                                   id="NavigationTreeDbSeparator" value="_"><a class="restore-default"
+                                                                                               href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10#NavigationTreeDbSeparator"
+                                                                                               title="还原为默认值"
+                                                                                               style="display: inline-block; opacity: 0.25;"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="" alt="" class="icon ic_s_reload" style="display: none;"></a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </fieldset>
+                            <fieldset class="optbox" id="Navi_tables" style="display: none;">
+                                <legend>表</legend>
+                                <p>表显示选项。</p>
+                                <table width="100%" cellspacing="0">
+                                    <tbody>
+                                    <tr>
+                                        <th><label for="NavigationTreeDefaultTabTable">快速访问图标的目标</label><span
+                                                class="doc"><a
+                                                href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationTreeDefaultTabTable"
+                                                target="documentation"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="文档" alt="文档" class="icon ic_b_help"></a>
+</span></th>
+                                        <td><select name="NavigationTreeDefaultTabTable"
+                                                    id="NavigationTreeDefaultTabTable">
+                                            <option value="structure" selected="selected">结构</option>
+                                            <option value="sql">SQL</option>
+                                            <option value="search">搜索</option>
+                                            <option value="insert">插入</option>
+                                            <option value="browse">浏览</option>
+                                        </select><a class="restore-default"
+                                                    href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10#NavigationTreeDefaultTabTable"
+                                                    title="还原为默认值" style="display: inline-block; opacity: 0.25;"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="" alt="" class="icon ic_s_reload" style="display: none;"></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th><label for="NavigationTreeDefaultTabTable2">第二快速访问图标的目标页面</label><span
+                                                class="doc"><a
+                                                href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationTreeDefaultTabTable2"
+                                                target="documentation"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="文档" alt="文档" class="icon ic_b_help"></a>
+</span></th>
+                                        <td><select name="NavigationTreeDefaultTabTable2"
+                                                    id="NavigationTreeDefaultTabTable2">
+                                            <option value="" selected="selected"></option>
+                                            <option value="structure">结构</option>
+                                            <option value="sql">SQL</option>
+                                            <option value="search">搜索</option>
+                                            <option value="insert">插入</option>
+                                            <option value="browse">浏览</option>
+                                        </select><a class="restore-default"
+                                                    href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10#NavigationTreeDefaultTabTable2"
+                                                    title="还原为默认值" style="display: inline-block; opacity: 0.25;"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="" alt="" class="icon ic_s_reload" style="display: none;"></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th><label for="NavigationTreeTableSeparator">表树分隔符</label><span class="doc"><a
+                                                href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationTreeTableSeparator"
+                                                target="documentation"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="文档" alt="文档" class="icon ic_b_help"></a>
+</span>
+                                            <small>将表分为不同层级的字符串。</small>
+                                        </th>
+                                        <td><input type="text" size="25" name="NavigationTreeTableSeparator"
+                                                   id="NavigationTreeTableSeparator" value="__"><a
+                                                class="restore-default"
+                                                href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10#NavigationTreeTableSeparator"
+                                                title="还原为默认值" style="display: inline-block; opacity: 0.25;"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="" alt="" class="icon ic_s_reload" style="display: none;"></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th><label for="NavigationTreeTableLevel">表树最大深度</label><span class="doc"><a
+                                                href="http://localhost/phpmyadmin/doc/html/config.html#cfg_NavigationTreeTableLevel"
+                                                target="documentation"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="文档" alt="文档" class="icon ic_b_help"></a>
+</span></th>
+                                        <td><input type="number" name="NavigationTreeTableLevel"
+                                                   id="NavigationTreeTableLevel" value="1"><a class="restore-default"
+                                                                                              href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10#NavigationTreeTableLevel"
+                                                                                              title="还原为默认值"
+                                                                                              style="display: inline-block; opacity: 0.25;"><img
+                                                src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                                title="" alt="" class="icon ic_s_reload" style="display: none;"></a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </fieldset>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pma_drop_handler">将文件拖动至此</div>
+    <div class="pma_sql_import_status"><h2>SQL upload ( <span class="pma_import_count">0</span> ) <span
+            class="close">x</span><span class="minimize">-</span></h2>
+        <div></div>
+    </div>
+</div>
+<div id="prefs_autoload" class="notice print_ignore" style="display:none">
+    <form action="http://localhost/phpmyadmin/prefs_manage.php" method="post" class="disableAjax">
+        <input type="hidden" name="token" value="4f13a4aaf28b1c96d0b2a044e1f05c10"> <input type="hidden" name="json"
+                                                                                           value="">
+        <input type="hidden" name="submit_import" value="1">
+        <input type="hidden" name="return_url" value="index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10">
+        你的浏览器中有当前域的 phpMyAdmin 设置。是否导入到当前会话中？ <br>
+        <a href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10#yes">是</a>
+        / <a href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10#no">否</a>
+    </form>
+</div>
+<noscript>
+    <div class="error"><img src="<?= __PUBLIC__.'php_admin/'?>dot.gif" title="" alt="" class="icon ic_s_error"/> 该处必须启用 Javascript！</div>
+</noscript>
+<div id="floating_menubar" style="margin-left: 318px; left: 0px; position: fixed; top: 0px; width: 100%; z-index: 99;">
+    <div id="serverinfo"><img src="<?= __PUBLIC__.'php_admin/'?>dot.gif" title="" alt=""
+                              class="icon ic_s_host item"><a
+            href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10" class="item">服务器: Local
+        Databases</a>
+        <div class="clearfloat"></div>
+    </div>
+    <div id="topmenucontainer" class="menucontainer">
+        <ul id="topmenu" class="resizable-menu">
+            <li>
+
+                <a href="http://www.arithmetic.com/index.php/library/index"
+                   class="tab">
+                    <img src="<?= __PUBLIC__.'php_admin/'?>dot.gif" title="数据库" alt="数据库"
+                         class="icon ic_s_db">&nbsp;数据库 </a>
+            </li>
+            <li>
+
+                <a href="http://www.arithmetic.com/index.php/sql/index"
+                   class="tab">
+                    <img src="<?= __PUBLIC__.'php_admin/'?>dot.gif" title="SQL" alt="SQL"
+                         class="icon ic_b_sql">&nbsp;SQL </a>
+            </li>
+            <li>
+
+                <a href="http://localhost/phpmyadmin/server_status.php?db=&amp;token=4f13a4aaf28b1c96d0b2a044e1f05c10"
+                   class="tab">
+                    <img src="<?= __PUBLIC__.'php_admin/'?>dot.gif" title="状态" alt="状态"
+                         class="icon ic_s_status">&nbsp;状态 </a>
+            </li>
+            <li>
+
+                <a href="http://localhost/phpmyadmin/server_privileges.php?db=&amp;token=4f13a4aaf28b1c96d0b2a044e1f05c10&amp;viewing_mode=server"
+                   class="tab">
+                    <img src="<?= __PUBLIC__.'php_admin/'?>dot.gif" title="账户" alt="账户"
+                         class="icon ic_s_rights">&nbsp;账户 </a>
+            </li>
+            <li>
+
+                <a href="http://localhost/phpmyadmin/server_export.php?db=&amp;token=4f13a4aaf28b1c96d0b2a044e1f05c10"
+                   class="tab">
+                    <img src="<?= __PUBLIC__.'php_admin/'?>dot.gif" title="导出" alt="导出"
+                         class="icon ic_b_export">&nbsp;导出 </a>
+            </li>
+            <li>
+
+                <a href="http://localhost/phpmyadmin/server_import.php?db=&amp;token=4f13a4aaf28b1c96d0b2a044e1f05c10"
+                   class="tab">
+                    <img src="<?= __PUBLIC__.'php_admin/'?>dot.gif" title="导入" alt="导入"
+                         class="icon ic_b_import">&nbsp;导入 </a>
+            </li>
+            <li>
+
+                <a href="http://localhost/phpmyadmin/prefs_manage.php?db=&amp;token=4f13a4aaf28b1c96d0b2a044e1f05c10"
+                   class="tab">
+                    <img src="<?= __PUBLIC__.'php_admin/'?>dot.gif" title="设置" alt="设置"
+                         class="icon ic_b_tblops">&nbsp;设置 </a>
+            </li>
+            <li>
+
+                <a href="http://localhost/phpmyadmin/server_replication.php?db=&amp;token=4f13a4aaf28b1c96d0b2a044e1f05c10"
+                   class="tab">
+                    <img src="<?= __PUBLIC__.'php_admin/'?>dot.gif" title="复制" alt="复制"
+                         class="icon ic_s_replication">&nbsp;复制 </a>
+            </li>
+            <li>
+
+                <a href="http://localhost/phpmyadmin/server_variables.php?db=&amp;token=4f13a4aaf28b1c96d0b2a044e1f05c10"
+                   class="tab">
+                    <img src="<?= __PUBLIC__.'php_admin/'?>dot.gif" title="变量" alt="变量"
+                         class="icon ic_s_vars">&nbsp;变量 </a>
+            </li>
+            <li>
+
+                <a href="http://localhost/phpmyadmin/server_collations.php?db=&amp;token=4f13a4aaf28b1c96d0b2a044e1f05c10"
+                   class="tab">
+                    <img src="<?= __PUBLIC__.'php_admin/'?>dot.gif" title="字符集" alt="字符集"
+                         class="icon ic_s_asci">&nbsp;字符集 </a>
+            </li>
+            <li>
+
+                <a href="http://localhost/phpmyadmin/server_engines.php?db=&amp;token=4f13a4aaf28b1c96d0b2a044e1f05c10"
+                   class="tab">
+                    <img src="<?= __PUBLIC__.'php_admin/'?>dot.gif" title="引擎" alt="引擎"
+                         class="icon ic_b_engine">&nbsp;引擎 </a>
+            </li>
+            <li>
+
+                <a href="http://localhost/phpmyadmin/server_plugins.php?db=&amp;token=4f13a4aaf28b1c96d0b2a044e1f05c10"
+                   class="tab">
+                    <img src="<?= __PUBLIC__.'php_admin/'?>b_plugin.png" title="插件" alt="插件">&nbsp;插件
+                </a>
+            </li>
+            <li class="submenu" style=""><a
+                    href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10#"
+                    class="tab nowrap"><img alt="" title=""
+                                            src="<?= __PUBLIC__.'php_admin/'?>dot.gif"
+                                            class="icon ic_b_more">更多</a>
+                <ul class="notonly"></ul>
+            </li>
+            <div class="clearfloat"></div>
+        </ul>
+    </div>
+</div>
+<span id="page_nav_icons"><span id="lock_page_icon"></span><span id="page_settings_icon"><img
+        src="<?= __PUBLIC__.'php_admin/'?>dot.gif" title="页面相关设置" alt="页面相关设置"
+        class="icon ic_s_cog"></span><a id="goto_pagetop"
+                                        href="http://localhost/phpmyadmin/index.php?token=4f13a4aaf28b1c96d0b2a044e1f05c10#"><img
+        src="<?= __PUBLIC__.'php_admin/'?>dot.gif" title="点击以滚动到页面顶部" alt="点击以滚动到页面顶部"
+        class="icon ic_s_top"></a></span>
+<div id="pma_console_container">
+    <div id="pma_console" style="margin-left: 318px;">
+        <div class="toolbar collapsed">
+            <div class="switch_button console_switch"><img
+                    src="<?= __PUBLIC__.'php_admin/'?>dot.gif" title="SQL 查询控制台"
+                    alt="SQL 查询控制台" class="icon ic_console"><span>控制台</span></div>
+            <div class="button clear"><span>清除</span></div>
+            <div class="button history"><span>历史</span></div>
+            <div class="button options"><span>选项</span></div>
+            <div class="button debug hide"><span>调试 SQL</span></div>
+        </div>
+        <div class="content" style="height: 92px; margin-bottom: -98px; display: none;">
+            <div class="console_message_container">
+                <div class="message welcome binded"><span><span id="instructions-0" style="display: inline;">按 Ctrl+Enter 键执行查询</span><span
+                        class="hide" id="instructions-1" style="display: none;">按 Enter 执行查询</span></span></div>
+            </div>
+            <div class="query_input"><span class="console_query_input"><div class="CodeMirror cm-s-pma CodeMirror-wrap"><div
+                    style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 16px;"><textarea
+                    autocorrect="off" autocapitalize="off" spellcheck="false"
+                    style="position: absolute; padding: 0px; width: 1000px; height: 1em; outline: none;"
+                    tabindex="0"></textarea></div><div class="CodeMirror-vscrollbar" cm-not-content="true"><div
+                    style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-hscrollbar"
+                                                                          cm-not-content="true"><div
+                    style="height: 100%; min-height: 1px; width: 0px;"></div></div><div
+                    class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div
+                    class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll"
+                                                                                      tabindex="-1"><div
+                    class="CodeMirror-sizer"
+                    style="margin-left: 16px; margin-bottom: -17px; border-right-width: 13px; min-height: 15px; padding-right: 0px; padding-bottom: 0px;"><div
+                    style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div
+                    style="position: relative; outline: none;"><div
+                    class="CodeMirror-measure"><span><span>​</span>x</span></div><div class="CodeMirror-measure"></div><div
+                    style="position: relative; z-index: 1;"></div><div class="CodeMirror-cursors"><div
+                    class="CodeMirror-cursor" style="left: 0px; top: 0px; height: 15px;">&nbsp;</div></div><div
+                    class="CodeMirror-code"><pre class=""><span style="padding-right: 0.1px;"><span cm-text="">​</span></span></pre></div></div></div></div></div><div
+                    style="position: absolute; height: 13px; width: 1px; top: 15px;"></div><div
+                    class="CodeMirror-gutters" style="height: 30px;"><div
+                    class="CodeMirror-gutter CodeMirror-lint-markers"></div></div></div></div></span></div>
+        </div>
+        <div class="mid_layer"></div>
+        <div class="card ungrouped" id="debug_console">
+            <div class="toolbar">
+                <div class="button order order_asc active"><span>递增排序</span></div>
+                <div class="button order order_desc"><span>递减排序</span></div>
+                <div class="text"><span>命令：</span></div>
+                <div class="switch_button"><span>调试 SQL</span></div>
+                <div class="button order_by sort_count"><span>数量</span></div>
+                <div class="button order_by sort_exec active"><span>运行顺序</span></div>
+                <div class="button order_by sort_time"><span>用时</span></div>
+                <div class="text"><span>排序条件：</span></div>
+                <div class="button group_queries"><span>联合查询</span></div>
+                <div class="button ungroup_queries"><span>不使用联合查询</span></div>
+            </div>
+            <div class="content debug" style="height: 92px;">
+                <div class="message welcome binded"></div>
+                <div class="debugLog"></div>
+            </div>
+            <div class="templates">
+                <div class="debug_query action_content"><span class="action collapse">崩溃</span> <span
+                        class="action expand">扩展</span> <span class="action dbg_show_trace">显示跟踪</span> <span
+                        class="action dbg_hide_trace">隐藏跟踪</span> <span
+                        class="text count hide">记录数： <span></span></span><span
+                        class="text time">用时： <span></span></span></div>
+            </div>
+        </div>
+        <div class="card" id="pma_console_options">
+            <div class="toolbar">
+                <div class="switch_button"><span>选项</span></div>
+                <div class="button default"><span>恢复默认</span></div>
+            </div>
+            <div class="content" style="height: 92px;"><label><input type="checkbox"
+                                                                     name="always_expand">总是扩展查询消息</label><br><label><input
+                    type="checkbox" name="start_history">在开始时显示查询历史</label><br><label><input type="checkbox"
+                                                                                             name="current_query">显示当前浏览查询</label><br><label><input
+                    type="checkbox" name="enter_executes">浏览设置，使按Shift+Enter键执行输入和插入新行作为永久设置。</label><br><label><input
+                    type="checkbox" name="dark_theme">切换到黑色主题</label><br></div>
+        </div>
+        <div class="templates">
+            <div class="query_actions"><span class="action collapse">崩溃</span> <span class="action expand">扩展</span>
+                <span class="action requery">重新查询</span> <span class="action edit">编辑</span> <span
+                        class="action explain">解析</span> <span class="action profiling">性能分析</span> <span
+                        class="text failed">查询失败</span> <span class="text targetdb">数据库: <span></span></span> <span
+                        class="text query_time">查询时间: <span></span></span></div>
+        </div>
+    </div>
+</div>
+
+<div id="page_content"><h2>
+    <img title="" class="icon ic_s_db" alt="" src="<?= __PUBLIC__.'php_admin/'?>dot.gif">    数据库
+</h2>
+    <ul>
+        <li class="no_bullets" id="li_create_database">
+            <form class="ajax" id="create_database_form" action="server_databases.php" method="post">
+                <strong>
+                    <label for="text_create_db">
+                        <img title="" class="icon ic_b_newdb" alt="" src="<?= __PUBLIC__.'php_admin/'?>/dot.gif"> 新建数据库                    </label>&nbsp;<a href="./url.php?url=https%3A%2F%2Fdev.mysql.com%2Fdoc%2Frefman%2F5.7%2Fen%2Fcreate-database.html" target="mysql_doc"><img title="文档" class="icon ic_b_help" alt="文档" src="<?= __PUBLIC__.'php_admin/'?>dot.gif"></a>                </strong>
+                <br>
+
+                <input name="token" type="hidden" value="4a137f055adf7582fdb7dbdaaeda8dbb">                <input name="reload" type="hidden" value="1">
+
+                <input name="new_db" class="textfield" id="text_create_db" required="" type="text" maxlength="64" placeholder="数据库名" value="">
+                <select name="db_collation" lang="en" dir="ltr">
+                    <option value="">排序规则</option>
+                    <option value=""></option>
+                    <optgroup title="ARMSCII-8 Armenian" label="armscii8">
+                        <option title="亚美尼亚语, 二进制" value="armscii8_bin">armscii8_bin</option>
+                        <option title="亚美尼亚语, 不区分大小写" value="armscii8_general_ci">armscii8_general_ci</option>
+                    </optgroup>
+                    <optgroup title="US ASCII" label="ascii">
+                        <option title="西欧 (多语言), 二进制" value="ascii_bin">ascii_bin</option>
+                        <option title="西欧 (多语言), 不区分大小写" value="ascii_general_ci">ascii_general_ci</option>
+                    </optgroup>
+                    <optgroup title="Big5 Traditional Chinese" label="big5">
+                        <option title="繁体中文, 二进制" value="big5_bin">big5_bin</option>
+                        <option title="繁体中文, 不区分大小写" value="big5_chinese_ci">big5_chinese_ci</option>
+                    </optgroup>
+                    <optgroup title="Binary pseudo charset" label="binary">
+                        <option title="二进制" value="binary">binary</option>
+                    </optgroup>
+                    <optgroup title="Windows Central European" label="cp1250">
+                        <option title="中欧 (多语言), 二进制" value="cp1250_bin">cp1250_bin</option>
+                        <option title="克罗地亚语, 不区分大小写" value="cp1250_croatian_ci">cp1250_croatian_ci</option>
+                        <option title="捷克语, 区分大小写" value="cp1250_czech_cs">cp1250_czech_cs</option>
+                        <option title="中欧 (多语言), 不区分大小写" value="cp1250_general_ci">cp1250_general_ci</option>
+                        <option title="波兰语, 不区分大小写" value="cp1250_polish_ci">cp1250_polish_ci</option>
+                    </optgroup>
+                    <optgroup title="Windows Cyrillic" label="cp1251">
+                        <option title="西里尔语 (多语言), 二进制" value="cp1251_bin">cp1251_bin</option>
+                        <option title="保加利亚语, 不区分大小写" value="cp1251_bulgarian_ci">cp1251_bulgarian_ci</option>
+                        <option title="西里尔语 (多语言), 不区分大小写" value="cp1251_general_ci">cp1251_general_ci</option>
+                        <option title="西里尔语 (多语言), 区分大小写" value="cp1251_general_cs">cp1251_general_cs</option>
+                        <option title="乌克兰语, 不区分大小写" value="cp1251_ukrainian_ci">cp1251_ukrainian_ci</option>
+                    </optgroup>
+                    <optgroup title="Windows Arabic" label="cp1256">
+                        <option title="阿拉伯语, 二进制" value="cp1256_bin">cp1256_bin</option>
+                        <option title="阿拉伯语, 不区分大小写" value="cp1256_general_ci">cp1256_general_ci</option>
+                    </optgroup>
+                    <optgroup title="Windows Baltic" label="cp1257">
+                        <option title="巴拉克语 (多语言), 二进制" value="cp1257_bin">cp1257_bin</option>
+                        <option title="巴拉克语 (多语言), 不区分大小写" value="cp1257_general_ci">cp1257_general_ci</option>
+                        <option title="立陶宛语, 不区分大小写" value="cp1257_lithuanian_ci">cp1257_lithuanian_ci</option>
+                    </optgroup>
+                    <optgroup title="DOS West European" label="cp850">
+                        <option title="西欧 (多语言), 二进制" value="cp850_bin">cp850_bin</option>
+                        <option title="西欧 (多语言), 不区分大小写" value="cp850_general_ci">cp850_general_ci</option>
+                    </optgroup>
+                    <optgroup title="DOS Central European" label="cp852">
+                        <option title="中欧 (多语言), 二进制" value="cp852_bin">cp852_bin</option>
+                        <option title="中欧 (多语言), 不区分大小写" value="cp852_general_ci">cp852_general_ci</option>
+                    </optgroup>
+                    <optgroup title="DOS Russian" label="cp866">
+                        <option title="俄语, 二进制" value="cp866_bin">cp866_bin</option>
+                        <option title="俄语, 不区分大小写" value="cp866_general_ci">cp866_general_ci</option>
+                    </optgroup>
+                    <optgroup title="SJIS for Windows Japanese" label="cp932">
+                        <option title="日语, 二进制" value="cp932_bin">cp932_bin</option>
+                        <option title="日语, 不区分大小写" value="cp932_japanese_ci">cp932_japanese_ci</option>
+                    </optgroup>
+                    <optgroup title="DEC West European" label="dec8">
+                        <option title="西欧 (多语言), 二进制" value="dec8_bin">dec8_bin</option>
+                        <option title="瑞典语, 不区分大小写" value="dec8_swedish_ci">dec8_swedish_ci</option>
+                    </optgroup>
+                    <optgroup title="UJIS for Windows Japanese" label="eucjpms">
+                        <option title="日语, 二进制" value="eucjpms_bin">eucjpms_bin</option>
+                        <option title="日语, 不区分大小写" value="eucjpms_japanese_ci">eucjpms_japanese_ci</option>
+                    </optgroup>
+                    <optgroup title="EUC-KR Korean" label="euckr">
+                        <option title="朝鲜语, 二进制" value="euckr_bin">euckr_bin</option>
+                        <option title="朝鲜语, 不区分大小写" value="euckr_korean_ci">euckr_korean_ci</option>
+                    </optgroup>
+                    <optgroup title="China National Standard GB18030" label="gb18030">
+                        <option title="未知, 二进制" value="gb18030_bin">gb18030_bin</option>
+                        <option title=", 不区分大小写" value="gb18030_chinese_ci">gb18030_chinese_ci</option>
+                        <option title="Unicode (多语言)" value="gb18030_unicode_520_ci">gb18030_unicode_520_ci</option>
+                    </optgroup>
+                    <optgroup title="GB2312 Simplified Chinese" label="gb2312">
+                        <option title="简体中文, 二进制" value="gb2312_bin">gb2312_bin</option>
+                        <option title="简体中文, 不区分大小写" value="gb2312_chinese_ci">gb2312_chinese_ci</option>
+                    </optgroup>
+                    <optgroup title="GBK Simplified Chinese" label="gbk">
+                        <option title="简体中文, 二进制" value="gbk_bin">gbk_bin</option>
+                        <option title="简体中文, 不区分大小写" value="gbk_chinese_ci">gbk_chinese_ci</option>
+                    </optgroup>
+                    <optgroup title="GEOSTD8 Georgian" label="geostd8">
+                        <option title="乔治亚语, 二进制" value="geostd8_bin">geostd8_bin</option>
+                        <option title="乔治亚语, 不区分大小写" value="geostd8_general_ci">geostd8_general_ci</option>
+                    </optgroup>
+                    <optgroup title="ISO 8859-7 Greek" label="greek">
+                        <option title="希腊语, 二进制" value="greek_bin">greek_bin</option>
+                        <option title="希腊语, 不区分大小写" value="greek_general_ci">greek_general_ci</option>
+                    </optgroup>
+                    <optgroup title="ISO 8859-8 Hebrew" label="hebrew">
+                        <option title="希伯来语, 二进制" value="hebrew_bin">hebrew_bin</option>
+                        <option title="希伯来语, 不区分大小写" value="hebrew_general_ci">hebrew_general_ci</option>
+                    </optgroup>
+                    <optgroup title="HP West European" label="hp8">
+                        <option title="西欧 (多语言), 二进制" value="hp8_bin">hp8_bin</option>
+                        <option title="英语, 不区分大小写" value="hp8_english_ci">hp8_english_ci</option>
+                    </optgroup>
+                    <optgroup title="DOS Kamenicky Czech-Slovak" label="keybcs2">
+                        <option title="捷克斯洛伐克语, 二进制" value="keybcs2_bin">keybcs2_bin</option>
+                        <option title="捷克斯洛伐克语, 不区分大小写" value="keybcs2_general_ci">keybcs2_general_ci</option>
+                    </optgroup>
+                    <optgroup title="KOI8-R Relcom Russian" label="koi8r">
+                        <option title="俄语, 二进制" value="koi8r_bin">koi8r_bin</option>
+                        <option title="俄语, 不区分大小写" value="koi8r_general_ci">koi8r_general_ci</option>
+                    </optgroup>
+                    <optgroup title="KOI8-U Ukrainian" label="koi8u">
+                        <option title="乌克兰语, 二进制" value="koi8u_bin">koi8u_bin</option>
+                        <option title="乌克兰语, 不区分大小写" value="koi8u_general_ci">koi8u_general_ci</option>
+                    </optgroup>
+                    <optgroup title="cp1252 West European" label="latin1">
+                        <option title="西欧 (多语言), 二进制" value="latin1_bin">latin1_bin</option>
+                        <option title="丹麦语, 不区分大小写" value="latin1_danish_ci">latin1_danish_ci</option>
+                        <option title="西欧 (多语言), 不区分大小写" value="latin1_general_ci">latin1_general_ci</option>
+                        <option title="西欧 (多语言), 区分大小写" value="latin1_general_cs">latin1_general_cs</option>
+                        <option title="德语 (字典), 不区分大小写" value="latin1_german1_ci">latin1_german1_ci</option>
+                        <option title="德语 (电话本), 不区分大小写" value="latin1_german2_ci">latin1_german2_ci</option>
+                        <option title="西班牙语, 不区分大小写" value="latin1_spanish_ci">latin1_spanish_ci</option>
+                        <option title="瑞典语, 不区分大小写" value="latin1_swedish_ci">latin1_swedish_ci</option>
+                    </optgroup>
+                    <optgroup title="ISO 8859-2 Central European" label="latin2">
+                        <option title="中欧 (多语言), 二进制" value="latin2_bin">latin2_bin</option>
+                        <option title="克罗地亚语, 不区分大小写" value="latin2_croatian_ci">latin2_croatian_ci</option>
+                        <option title="捷克语, 区分大小写" value="latin2_czech_cs">latin2_czech_cs</option>
+                        <option title="中欧 (多语言), 不区分大小写" value="latin2_general_ci">latin2_general_ci</option>
+                        <option title="匈牙利语, 不区分大小写" value="latin2_hungarian_ci">latin2_hungarian_ci</option>
+                    </optgroup>
+                    <optgroup title="ISO 8859-9 Turkish" label="latin5">
+                        <option title="土耳其语, 二进制" value="latin5_bin">latin5_bin</option>
+                        <option title="土耳其语, 不区分大小写" value="latin5_turkish_ci">latin5_turkish_ci</option>
+                    </optgroup>
+                    <optgroup title="ISO 8859-13 Baltic" label="latin7">
+                        <option title="巴拉克语 (多语言), 二进制" value="latin7_bin">latin7_bin</option>
+                        <option title="爱沙尼亚语, 区分大小写" value="latin7_estonian_cs">latin7_estonian_cs</option>
+                        <option title="巴拉克语 (多语言), 不区分大小写" value="latin7_general_ci">latin7_general_ci</option>
+                        <option title="巴拉克语 (多语言), 区分大小写" value="latin7_general_cs">latin7_general_cs</option>
+                    </optgroup>
+                    <optgroup title="Mac Central European" label="macce">
+                        <option title="中欧 (多语言), 二进制" value="macce_bin">macce_bin</option>
+                        <option title="中欧 (多语言), 不区分大小写" value="macce_general_ci">macce_general_ci</option>
+                    </optgroup>
+                    <optgroup title="Mac West European" label="macroman">
+                        <option title="西欧 (多语言), 二进制" value="macroman_bin">macroman_bin</option>
+                        <option title="西欧 (多语言), 不区分大小写" value="macroman_general_ci">macroman_general_ci</option>
+                    </optgroup>
+                    <optgroup title="Shift-JIS Japanese" label="sjis">
+                        <option title="日语, 二进制" value="sjis_bin">sjis_bin</option>
+                        <option title="日语, 不区分大小写" value="sjis_japanese_ci">sjis_japanese_ci</option>
+                    </optgroup>
+                    <optgroup title="7bit Swedish" label="swe7">
+                        <option title="瑞典语, 二进制" value="swe7_bin">swe7_bin</option>
+                        <option title="瑞典语, 不区分大小写" value="swe7_swedish_ci">swe7_swedish_ci</option>
+                    </optgroup>
+                    <optgroup title="TIS620 Thai" label="tis620">
+                        <option title="泰语, 二进制" value="tis620_bin">tis620_bin</option>
+                        <option title="泰语, 不区分大小写" value="tis620_thai_ci">tis620_thai_ci</option>
+                    </optgroup>
+                    <optgroup title="UCS-2 Unicode" label="ucs2">
+                        <option title="Unicode (多语言), 二进制" value="ucs2_bin">ucs2_bin</option>
+                        <option title="克罗地亚语, 不区分大小写" value="ucs2_croatian_ci">ucs2_croatian_ci</option>
+                        <option title="捷克语, 不区分大小写" value="ucs2_czech_ci">ucs2_czech_ci</option>
+                        <option title="丹麦语, 不区分大小写" value="ucs2_danish_ci">ucs2_danish_ci</option>
+                        <option title="世界语, 不区分大小写" value="ucs2_esperanto_ci">ucs2_esperanto_ci</option>
+                        <option title="爱沙尼亚语, 不区分大小写" value="ucs2_estonian_ci">ucs2_estonian_ci</option>
+                        <option title="Unicode (多语言), 不区分大小写" value="ucs2_general_ci">ucs2_general_ci</option>
+                        <option title="Unicode (多语言)" value="ucs2_general_mysql500_ci">ucs2_general_mysql500_ci</option>
+                        <option title="德语 (电话本), 不区分大小写" value="ucs2_german2_ci">ucs2_german2_ci</option>
+                        <option title="匈牙利语, 不区分大小写" value="ucs2_hungarian_ci">ucs2_hungarian_ci</option>
+                        <option title="冰岛语, 不区分大小写" value="ucs2_icelandic_ci">ucs2_icelandic_ci</option>
+                        <option title="拉脱维亚语, 不区分大小写" value="ucs2_latvian_ci">ucs2_latvian_ci</option>
+                        <option title="立陶宛语, 不区分大小写" value="ucs2_lithuanian_ci">ucs2_lithuanian_ci</option>
+                        <option title="波斯语, 不区分大小写" value="ucs2_persian_ci">ucs2_persian_ci</option>
+                        <option title="波兰语, 不区分大小写" value="ucs2_polish_ci">ucs2_polish_ci</option>
+                        <option title="西欧, 不区分大小写" value="ucs2_roman_ci">ucs2_roman_ci</option>
+                        <option title="罗马尼亚语, 不区分大小写" value="ucs2_romanian_ci">ucs2_romanian_ci</option>
+                        <option title="僧伽罗语, 不区分大小写" value="ucs2_sinhala_ci">ucs2_sinhala_ci</option>
+                        <option title="斯洛伐克语, 不区分大小写" value="ucs2_slovak_ci">ucs2_slovak_ci</option>
+                        <option title="斯洛文尼亚语, 不区分大小写" value="ucs2_slovenian_ci">ucs2_slovenian_ci</option>
+                        <option title="传统西班牙语, 不区分大小写" value="ucs2_spanish2_ci">ucs2_spanish2_ci</option>
+                        <option title="西班牙语, 不区分大小写" value="ucs2_spanish_ci">ucs2_spanish_ci</option>
+                        <option title="瑞典语, 不区分大小写" value="ucs2_swedish_ci">ucs2_swedish_ci</option>
+                        <option title="土耳其语, 不区分大小写" value="ucs2_turkish_ci">ucs2_turkish_ci</option>
+                        <option title="Unicode (多语言)" value="ucs2_unicode_520_ci">ucs2_unicode_520_ci</option>
+                        <option title="Unicode (多语言), 不区分大小写" value="ucs2_unicode_ci">ucs2_unicode_ci</option>
+                        <option title="越南语, 不区分大小写" value="ucs2_vietnamese_ci">ucs2_vietnamese_ci</option>
+                    </optgroup>
+                    <optgroup title="EUC-JP Japanese" label="ujis">
+                        <option title="日语, 二进制" value="ujis_bin">ujis_bin</option>
+                        <option title="日语, 不区分大小写" value="ujis_japanese_ci">ujis_japanese_ci</option>
+                    </optgroup>
+                    <optgroup title="UTF-16 Unicode" label="utf16">
+                        <option title="未知, 二进制" value="utf16_bin">utf16_bin</option>
+                        <option title="克罗地亚语, 不区分大小写" value="utf16_croatian_ci">utf16_croatian_ci</option>
+                        <option title="捷克语, 不区分大小写" value="utf16_czech_ci">utf16_czech_ci</option>
+                        <option title="丹麦语, 不区分大小写" value="utf16_danish_ci">utf16_danish_ci</option>
+                        <option title="世界语, 不区分大小写" value="utf16_esperanto_ci">utf16_esperanto_ci</option>
+                        <option title="爱沙尼亚语, 不区分大小写" value="utf16_estonian_ci">utf16_estonian_ci</option>
+                        <option title="未知, 不区分大小写" value="utf16_general_ci">utf16_general_ci</option>
+                        <option title="德语 (电话本), 不区分大小写" value="utf16_german2_ci">utf16_german2_ci</option>
+                        <option title="匈牙利语, 不区分大小写" value="utf16_hungarian_ci">utf16_hungarian_ci</option>
+                        <option title="冰岛语, 不区分大小写" value="utf16_icelandic_ci">utf16_icelandic_ci</option>
+                        <option title="拉脱维亚语, 不区分大小写" value="utf16_latvian_ci">utf16_latvian_ci</option>
+                        <option title="立陶宛语, 不区分大小写" value="utf16_lithuanian_ci">utf16_lithuanian_ci</option>
+                        <option title="波斯语, 不区分大小写" value="utf16_persian_ci">utf16_persian_ci</option>
+                        <option title="波兰语, 不区分大小写" value="utf16_polish_ci">utf16_polish_ci</option>
+                        <option title="西欧, 不区分大小写" value="utf16_roman_ci">utf16_roman_ci</option>
+                        <option title="罗马尼亚语, 不区分大小写" value="utf16_romanian_ci">utf16_romanian_ci</option>
+                        <option title="僧伽罗语, 不区分大小写" value="utf16_sinhala_ci">utf16_sinhala_ci</option>
+                        <option title="斯洛伐克语, 不区分大小写" value="utf16_slovak_ci">utf16_slovak_ci</option>
+                        <option title="斯洛文尼亚语, 不区分大小写" value="utf16_slovenian_ci">utf16_slovenian_ci</option>
+                        <option title="传统西班牙语, 不区分大小写" value="utf16_spanish2_ci">utf16_spanish2_ci</option>
+                        <option title="西班牙语, 不区分大小写" value="utf16_spanish_ci">utf16_spanish_ci</option>
+                        <option title="瑞典语, 不区分大小写" value="utf16_swedish_ci">utf16_swedish_ci</option>
+                        <option title="土耳其语, 不区分大小写" value="utf16_turkish_ci">utf16_turkish_ci</option>
+                        <option title="Unicode (多语言)" value="utf16_unicode_520_ci">utf16_unicode_520_ci</option>
+                        <option title="Unicode (多语言), 不区分大小写" value="utf16_unicode_ci">utf16_unicode_ci</option>
+                        <option title="越南语, 不区分大小写" value="utf16_vietnamese_ci">utf16_vietnamese_ci</option>
+                    </optgroup>
+                    <optgroup title="UTF-16LE Unicode" label="utf16le">
+                        <option title="未知, 二进制" value="utf16le_bin">utf16le_bin</option>
+                        <option title="未知, 不区分大小写" value="utf16le_general_ci">utf16le_general_ci</option>
+                    </optgroup>
+                    <optgroup title="UTF-32 Unicode" label="utf32">
+                        <option title="未知, 二进制" value="utf32_bin">utf32_bin</option>
+                        <option title="克罗地亚语, 不区分大小写" value="utf32_croatian_ci">utf32_croatian_ci</option>
+                        <option title="捷克语, 不区分大小写" value="utf32_czech_ci">utf32_czech_ci</option>
+                        <option title="丹麦语, 不区分大小写" value="utf32_danish_ci">utf32_danish_ci</option>
+                        <option title="世界语, 不区分大小写" value="utf32_esperanto_ci">utf32_esperanto_ci</option>
+                        <option title="爱沙尼亚语, 不区分大小写" value="utf32_estonian_ci">utf32_estonian_ci</option>
+                        <option title="未知, 不区分大小写" value="utf32_general_ci">utf32_general_ci</option>
+                        <option title="德语 (电话本), 不区分大小写" value="utf32_german2_ci">utf32_german2_ci</option>
+                        <option title="匈牙利语, 不区分大小写" value="utf32_hungarian_ci">utf32_hungarian_ci</option>
+                        <option title="冰岛语, 不区分大小写" value="utf32_icelandic_ci">utf32_icelandic_ci</option>
+                        <option title="拉脱维亚语, 不区分大小写" value="utf32_latvian_ci">utf32_latvian_ci</option>
+                        <option title="立陶宛语, 不区分大小写" value="utf32_lithuanian_ci">utf32_lithuanian_ci</option>
+                        <option title="波斯语, 不区分大小写" value="utf32_persian_ci">utf32_persian_ci</option>
+                        <option title="波兰语, 不区分大小写" value="utf32_polish_ci">utf32_polish_ci</option>
+                        <option title="西欧, 不区分大小写" value="utf32_roman_ci">utf32_roman_ci</option>
+                        <option title="罗马尼亚语, 不区分大小写" value="utf32_romanian_ci">utf32_romanian_ci</option>
+                        <option title="僧伽罗语, 不区分大小写" value="utf32_sinhala_ci">utf32_sinhala_ci</option>
+                        <option title="斯洛伐克语, 不区分大小写" value="utf32_slovak_ci">utf32_slovak_ci</option>
+                        <option title="斯洛文尼亚语, 不区分大小写" value="utf32_slovenian_ci">utf32_slovenian_ci</option>
+                        <option title="传统西班牙语, 不区分大小写" value="utf32_spanish2_ci">utf32_spanish2_ci</option>
+                        <option title="西班牙语, 不区分大小写" value="utf32_spanish_ci">utf32_spanish_ci</option>
+                        <option title="瑞典语, 不区分大小写" value="utf32_swedish_ci">utf32_swedish_ci</option>
+                        <option title="土耳其语, 不区分大小写" value="utf32_turkish_ci">utf32_turkish_ci</option>
+                        <option title="Unicode (多语言)" value="utf32_unicode_520_ci">utf32_unicode_520_ci</option>
+                        <option title="Unicode (多语言), 不区分大小写" value="utf32_unicode_ci">utf32_unicode_ci</option>
+                        <option title="越南语, 不区分大小写" value="utf32_vietnamese_ci">utf32_vietnamese_ci</option>
+                    </optgroup>
+                    <optgroup title="UTF-8 Unicode" label="utf8">
+                        <option title="Unicode (多语言), 二进制" value="utf8_bin">utf8_bin</option>
+                        <option title="克罗地亚语, 不区分大小写" value="utf8_croatian_ci">utf8_croatian_ci</option>
+                        <option title="捷克语, 不区分大小写" value="utf8_czech_ci">utf8_czech_ci</option>
+                        <option title="丹麦语, 不区分大小写" value="utf8_danish_ci">utf8_danish_ci</option>
+                        <option title="世界语, 不区分大小写" value="utf8_esperanto_ci">utf8_esperanto_ci</option>
+                        <option title="爱沙尼亚语, 不区分大小写" value="utf8_estonian_ci">utf8_estonian_ci</option>
+                        <option title="Unicode (多语言), 不区分大小写" value="utf8_general_ci">utf8_general_ci</option>
+                        <option title="Unicode (多语言)" value="utf8_general_mysql500_ci">utf8_general_mysql500_ci</option>
+                        <option title="德语 (电话本), 不区分大小写" value="utf8_german2_ci">utf8_german2_ci</option>
+                        <option title="匈牙利语, 不区分大小写" value="utf8_hungarian_ci">utf8_hungarian_ci</option>
+                        <option title="冰岛语, 不区分大小写" value="utf8_icelandic_ci">utf8_icelandic_ci</option>
+                        <option title="拉脱维亚语, 不区分大小写" value="utf8_latvian_ci">utf8_latvian_ci</option>
+                        <option title="立陶宛语, 不区分大小写" value="utf8_lithuanian_ci">utf8_lithuanian_ci</option>
+                        <option title="波斯语, 不区分大小写" value="utf8_persian_ci">utf8_persian_ci</option>
+                        <option title="波兰语, 不区分大小写" value="utf8_polish_ci">utf8_polish_ci</option>
+                        <option title="西欧, 不区分大小写" value="utf8_roman_ci">utf8_roman_ci</option>
+                        <option title="罗马尼亚语, 不区分大小写" value="utf8_romanian_ci">utf8_romanian_ci</option>
+                        <option title="僧伽罗语, 不区分大小写" value="utf8_sinhala_ci">utf8_sinhala_ci</option>
+                        <option title="斯洛伐克语, 不区分大小写" value="utf8_slovak_ci">utf8_slovak_ci</option>
+                        <option title="斯洛文尼亚语, 不区分大小写" value="utf8_slovenian_ci">utf8_slovenian_ci</option>
+                        <option title="传统西班牙语, 不区分大小写" value="utf8_spanish2_ci">utf8_spanish2_ci</option>
+                        <option title="西班牙语, 不区分大小写" value="utf8_spanish_ci">utf8_spanish_ci</option>
+                        <option title="瑞典语, 不区分大小写" value="utf8_swedish_ci">utf8_swedish_ci</option>
+                        <option title="土耳其语, 不区分大小写" value="utf8_turkish_ci">utf8_turkish_ci</option>
+                        <option title="Unicode (多语言)" value="utf8_unicode_520_ci">utf8_unicode_520_ci</option>
+                        <option title="Unicode (多语言), 不区分大小写" value="utf8_unicode_ci">utf8_unicode_ci</option>
+                        <option title="越南语, 不区分大小写" value="utf8_vietnamese_ci">utf8_vietnamese_ci</option>
+                    </optgroup>
+                    <optgroup title="UTF-8 Unicode" label="utf8mb4">
+                        <option title="Unicode (多语言), 二进制" value="utf8mb4_bin">utf8mb4_bin</option>
+                        <option title="克罗地亚语, 不区分大小写" value="utf8mb4_croatian_ci">utf8mb4_croatian_ci</option>
+                        <option title="捷克语, 不区分大小写" value="utf8mb4_czech_ci">utf8mb4_czech_ci</option>
+                        <option title="丹麦语, 不区分大小写" value="utf8mb4_danish_ci">utf8mb4_danish_ci</option>
+                        <option title="世界语, 不区分大小写" value="utf8mb4_esperanto_ci">utf8mb4_esperanto_ci</option>
+                        <option title="爱沙尼亚语, 不区分大小写" value="utf8mb4_estonian_ci">utf8mb4_estonian_ci</option>
+                        <option title="Unicode (多语言), 不区分大小写" value="utf8mb4_general_ci">utf8mb4_general_ci</option>
+                        <option title="德语 (电话本), 不区分大小写" value="utf8mb4_german2_ci">utf8mb4_german2_ci</option>
+                        <option title="匈牙利语, 不区分大小写" value="utf8mb4_hungarian_ci">utf8mb4_hungarian_ci</option>
+                        <option title="冰岛语, 不区分大小写" value="utf8mb4_icelandic_ci">utf8mb4_icelandic_ci</option>
+                        <option title="拉脱维亚语, 不区分大小写" value="utf8mb4_latvian_ci">utf8mb4_latvian_ci</option>
+                        <option title="立陶宛语, 不区分大小写" value="utf8mb4_lithuanian_ci">utf8mb4_lithuanian_ci</option>
+                        <option title="波斯语, 不区分大小写" value="utf8mb4_persian_ci">utf8mb4_persian_ci</option>
+                        <option title="波兰语, 不区分大小写" value="utf8mb4_polish_ci">utf8mb4_polish_ci</option>
+                        <option title="西欧, 不区分大小写" value="utf8mb4_roman_ci">utf8mb4_roman_ci</option>
+                        <option title="罗马尼亚语, 不区分大小写" value="utf8mb4_romanian_ci">utf8mb4_romanian_ci</option>
+                        <option title="僧伽罗语, 不区分大小写" value="utf8mb4_sinhala_ci">utf8mb4_sinhala_ci</option>
+                        <option title="斯洛伐克语, 不区分大小写" value="utf8mb4_slovak_ci">utf8mb4_slovak_ci</option>
+                        <option title="斯洛文尼亚语, 不区分大小写" value="utf8mb4_slovenian_ci">utf8mb4_slovenian_ci</option>
+                        <option title="传统西班牙语, 不区分大小写" value="utf8mb4_spanish2_ci">utf8mb4_spanish2_ci</option>
+                        <option title="西班牙语, 不区分大小写" value="utf8mb4_spanish_ci">utf8mb4_spanish_ci</option>
+                        <option title="瑞典语, 不区分大小写" value="utf8mb4_swedish_ci">utf8mb4_swedish_ci</option>
+                        <option title="土耳其语, 不区分大小写" value="utf8mb4_turkish_ci">utf8mb4_turkish_ci</option>
+                        <option title="Unicode (多语言)" value="utf8mb4_unicode_520_ci">utf8mb4_unicode_520_ci</option>
+                        <option title="Unicode (多语言), 不区分大小写" value="utf8mb4_unicode_ci">utf8mb4_unicode_ci</option>
+                        <option title="越南语, 不区分大小写" value="utf8mb4_vietnamese_ci">utf8mb4_vietnamese_ci</option>
+                    </optgroup>
+                </select>
+                <input id="buttonGo" type="submit" value="创建">
+            </form>
+        </li>
+    </ul>
+    <div id="tableslistcontainer"><form name="dbStatsForm" class="ajax" id="dbStatsForm" action="server_databases.php" method="post">
+        <input name="pos" type="hidden" value="0"><input name="dbstats" type="hidden" value=""><input name="sort_by" type="hidden" value="SCHEMA_NAME"><input name="sort_order" type="hidden" value="asc"><input name="token" type="hidden" value="4a137f055adf7582fdb7dbdaaeda8dbb"><table class="data" id="tabledatabases">
+        <thead>
+        <tr>
+            <th></th>
+            <th>
+                <a href="server_databases.php?pos=0&amp;dbstats=0&amp;sort_by=SCHEMA_NAME&amp;sort_order=desc&amp;token=4a137f055adf7582fdb7dbdaaeda8dbb">
+                    数据库                <img title="递增" class="icon ic_s_asc" alt="递增" src="<?= __PUBLIC__.'php_admin/'?>dot.gif">            </a>
+            </th>
+
+            <th>
+                <a href="server_databases.php?pos=0&amp;dbstats=0&amp;sort_by=DEFAULT_COLLATION_NAME&amp;sort_order=desc&amp;token=4a137f055adf7582fdb7dbdaaeda8dbb">
+                    排序规则                                    </a>
+            </th>
+            <th>
+                操作        </th>
+        </tr>
+        </thead>
+
+    <tbody>
+        <?php foreach($sql as $k=>$v): ?>
+        <tr class="odd">
+            <td class="tool">
+                <input name="selected_dbs[]" title="1711a" class="checkall" type="checkbox" value="1711a">
+            </td>
+            <td class="name">
+                <a title="转到数据库" href="db_structure.php?db=&amp;token=4a137f055adf7582fdb7dbdaaeda8dbb&amp;db=1711a">
+                   <?= $v['SCHEMA_NAME']; ?>  </a>
+            </td>
+
+            <td class="value">
+                <dfn title="瑞典语, 不区分大小写">
+                    <?= $v['DEFAULT_COLLATION_NAME']; ?>  </dfn>
+            </td>
+
+            <td class="tool">
+                <a title='检查数据库 "1711a" 的权限。' onclick="PMA_commonActions.setDb('`1711a`');" href="server_privileges.php?db=&amp;token=4a137f055adf7582fdb7dbdaaeda8dbb&amp;db=1711a&amp;checkprivsdb=1711a">
+                    <span class="nowrap"><img title="检查权限" class="icon ic_s_rights" alt="检查权限" src="<?= __PUBLIC__.'php_admin/'?>dot.gif">&nbsp;检查权限</span>        </a>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+        <tfoot>
+    <tr>
+        <th></th>
+        <th>
+            总计: <span id="databases_count"><?php echo count($show_database); ?></span>
+        </th>
+
+        <th class="value">
+            <dfn title="瑞典语, 不区分大小写">
+                latin1_swedish_ci                    </dfn>
+        </th>
+        <th></th>
+    </tr>
+    </tfoot></table>
+        <img width="38" height="22" class="selectallarrow" alt="选中项：" src="<?= __PUBLIC__.'php_admin/'?>arrow_ltr.png"><input title="全选" class="checkall_box" id="dbStatsForm_checkall" type="checkbox"><label for="dbStatsForm_checkall">全选</label><i style="margin-left: 2em;">选中项：</i><button title="删除" class="mult_submit ajax" type="submit" value="删除">
+        <span class="nowrap"><img title="删除" class="icon ic_b_deltbl" alt="删除" src="<?= __PUBLIC__.'php_admin/'?>dot.gif">&nbsp;删除</span></button>
+        <div class="notice"><img title="" class="icon ic_s_notice" alt="" src="<?= __PUBLIC__.'php_admin/'?>dot.gif"> 注意：在此启用数据库统计可能导致网站服务器和 MySQL 服务器之间的流量骤增。</div><ul>
+
+        <li class="li_switch_dbstats">
+
+            <a title="启用统计" href="server_databases.php?db=&amp;token=4a137f055adf7582fdb7dbdaaeda8dbb&amp;dbstats=1">
+                <strong>
+                    启用统计</strong><br>
+            </a>
+        </li>
+    </ul></form></div></div>
+
+<div id="selflink" class="print_ignore"><a
+        href="http://localhost/phpmyadmin/index.php?db=&amp;table=&amp;server=1&amp;target=&amp;token=4f13a4aaf28b1c96d0b2a044e1f05c10"
+        title="打开新的 phpMyAdmin 窗口" target="_blank"><img
+        src="<?= __PUBLIC__.'php_admin/'?>dot.gif" title="打开新的 phpMyAdmin 窗口"
+        alt="打开新的 phpMyAdmin 窗口" class="icon ic_window-new"></a></div>
+<div class="clearfloat" id="pma_errors"></div>
+
+</body>
+</html>

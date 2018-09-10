@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+          /*div {
+                background: yellow;
+                border: 1px solid red;
+                width: 80px;
+                height: 80px;
+                margin: 0 5px;
+                float: left;
+          }
+        div.colored {
+             background: #1cfff8;
+        }*/
+
+          /*textarea {
+              height: 35px;
+            }
+          div {
+             color: red;
+            }
+          fieldset {
+           margin: 0;
+           padding: 0;
+           border-width: 0;
+          }
+          marked {
+           background-color: yellow;
+               border: 3px red solid;
+          }*/
+
+
+    </style>
+
+</head>
+
+<script src="/public/php_admin/jquery-1.7.2.js"></script>
+
+<body>
+
+<!--ID选择器 和 全局选择器-->
+<!--<div id="notMe"><p>id="notMe"</p></div>
+<div id="myDiv"><p>id="myDiv"</p></div>-->
+
+<!--类名选择器-->
+<!--<div class="div">phpMyAdmin</div>-->
+
+<!--动画效果元素-->
+<!--<button id="run">Run</button>
+<div></div>
+<div id="mover"></div>
+<div></div>-->
+
+<!--选中所有被禁用的元素-->
+<!--<form>
+    <input name="email" disabled="disabled" />
+    <input name="id" />
+</form>-->
+
+<!--选择所有没有子元素的元素（包括文本节点）-->
+<!--<table border="1" cellspacing="0">
+    <tr>
+        <td></td>
+        <td>#TD</td>
+    </tr>
+    <tr>
+        <td>#TD</td>
+        <td></td>
+    </tr>
+</table>-->
+
+<!--选择所有可用的元素（未被禁用的元素）-->
+<!--<form>
+    <input name="email" disabled="disabled">
+    <input name="id">
+</form>-->
+
+<!--在匹配的集合中选择索引值为（匹配)的元素-->
+<!--<table border="1" cellspacing="0">
+    <tr>
+        <td>#1</td>
+        <td>#2</td>
+    </tr>
+    <tr>
+        <td>#3</td>
+        <td>#4</td>
+    </tr>
+    <tr>
+        <td>#5</td>
+        <td>#6</td>
+    </tr>
+</table>-->
+
+<!--选择索引值是偶数的元素（从0开始计数）-->
+<!--<table border="1" cellspacing="0">
+    <tr>
+        <td>#0</td>
+        <td>#1</td>
+    </tr>
+    <tr>
+        <td>#2</td>
+        <td>#3</td>
+    </tr>
+    <tr>
+        <td>#4</td>
+        <td>#5</td>
+    </tr>
+    <tr>
+        <td>#6</td>
+        <td>#7</td>
+    </tr>
+</table>-->
+
+<!--选择所有类型为文件（file）的元素-->
+<!--<form>
+    <input type="text">
+    <input type="file">
+</form>-->
+
+
+<script>
+
+    //jQuery中的ID选择器
+//    $("#myDiv").css("border","3px solid red");
+
+    //jQuery中的*（全局）选择器
+//    $("*").css("border","2px solid red");
+
+    //jQuery中的类名选择器
+//    $(".div").css("border","1px solid red");
+
+    //jQuery中的动画效果元素
+    /*$( "#run" ).click(function() {
+        $( "div:animated" ).toggleClass( "colored" );
+    });
+    function animateIt() {
+    $( "#mover" ).slideToggle( "slow", animateIt );
+    }
+    animateIt();*/
+
+    //jQuery选中所有被禁用的元素
+//    $( "input:disabled" ).val( "This is it" );
+
+    //jQuery选择所有没有子元素的元素（包括文本节点）
+    /*$("td:empty")
+        .text("哇哈哈")
+        .css("background","rgb(255,220,200)");*/
+
+    //选择所有可用的元素（未被禁用的元素）
+//    $("input:enabled").val("This is it");
+
+    //在匹配的集合中选择索引值为（匹配)的元素
+//    $("td:eq(3)").css('color','red');
+
+    //选择索引值是偶数的元素（从0开始计数）
+//    $("td:even").css('color','red');
+
+    //选择所有类型为文件（file）的元素
+//    var input = $("input:file").css({background:"yellow",border:"2px red solid"});
+
+    //选择一个匹配的DOM元素
+    
+
+
+</script>
+
+</body>
+</html>
